@@ -14,10 +14,28 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = [];
+  var round = 0;
+
+  var board = new Board({n: n});
+
+  var placeRook = function(round){
+    if (round === n){
+      return solution;
+    }
+    for(var i=0; i < n; i++){
+      board.get(round)[i] = 1;
+      if (board.hasColConflictAt(i)){
+        board.get(round)[i] = 0;
+      } else {
+        solution.push(board.get(round));
+        return placeRook(round + 1);
+      }
+    }
+  };
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  return placeRook(0);
 };
 
 
