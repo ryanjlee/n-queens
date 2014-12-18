@@ -74,28 +74,27 @@ window.countNRooksSolutions = function(n) {
 window.findNQueensSolution = function(n) {
   var solution = [];
   var board = new Board({n: n});
-  var queens = n;
+  var solved = false;
 
   var checkSolution = function(row) {
     if (row === n) {
-      return board;
+      solved = true;
+      return;
     }
     for (var column = 0; column < n; column++) {
       board.get(row)[column] = 1;
       if (!board.hasAnyQueenConflictsOn(row, column)) {
-        queens--;
-        board = checkSolution(row + 1);
-        if (!queens) {
-          return board;
+        checkSolution(row + 1);
+        if (solved) {
+          return;
         }
-        queens++;
       }
       board.get(row)[column] = 0;
     }
-    return board;
   };
 
   checkSolution(0);
+
 
   for (var i = 0; i < n; i++) {
     solution.push(board.get(i));
